@@ -13,8 +13,11 @@ def create_app():
         DATABASE=os.environ.get('FLASK_DATABASE'),)
     
     from . import db
+    from . import auth
     
     db.init_app(app)
+    app.register_blueprint(auth.bp)
+
 
     @app.route('/hola')
     def hola():
