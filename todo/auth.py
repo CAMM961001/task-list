@@ -19,7 +19,7 @@ def register():
         
         # User registry errors
         error = None
-        c.execute('select id from users where username = (%s);', (username,))
+        c.execute('select id from users where username = %s;', (username,))
         if not username: error = 'Username is required'
         if not password: error = 'Password is required'
         elif c.fetchone() is not None:
