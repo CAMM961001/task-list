@@ -19,7 +19,7 @@ def register():
         
         # User registry errors
         error = None
-        c.execute('select id from users where username = %s')
+        c.execute('select id from users where username = (%s);', (username,))
         if not username: error = 'Username is required'
         if not password: error = 'Password is required'
         elif c.fetchone() is not None:
@@ -28,7 +28,7 @@ def register():
         # Successful registry
         if error is None:
             c.execute(
-                'insert into users (username, password) values (%s, %s)',
+                'insert into users (username, password) values (%s, %s);',
                 (username, generate_password_hash(password)))
             db.commit()
             return redirect(url_for('auth.login'))
@@ -46,7 +46,7 @@ def login():
 
         # User login errors
         error = None
-        c.execute('select * from users where username = %s', (username,))
+        c.execute('select * from users where username = %s;', (username,))
         user = c.fetchone()
         if user is None: error = 'Invalid user or password'
         elif not check_password_hash(user['password'], password):
