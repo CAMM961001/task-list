@@ -14,10 +14,11 @@ def create_app():
     
     from . import db
     from . import auth
+    from . import todo
     
     db.init_app(app)
     app.register_blueprint(auth.bp)
-
+    app.register_blueprint(todo.bp)
 
     @app.route('/hola')
     def hola():
